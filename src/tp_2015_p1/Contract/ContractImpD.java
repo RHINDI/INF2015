@@ -11,7 +11,7 @@ import tp_2015_p1.Data.DataExtractor;
  *
  * @author hackr
  */
-public class ContractImpD extends SuperContract  {
+public class ContractImpD extends SuperContract {
 
     public ContractImpD(DataExtractor claimData) {
         super(claimData);
@@ -19,7 +19,7 @@ public class ContractImpD extends SuperContract  {
         super.refundsCalculation();
     }
 
-     private void buildMap() {
+    private void buildMap() {
         for (int i = 0; i < CLAIM_CARE_NBRS.size(); ++i) {
             String careN = CLAIM_CARE_NBRS.get(i);
 
@@ -36,7 +36,7 @@ public class ContractImpD extends SuperContract  {
                         CARE_NBRS_MAP_REFUND_P_CENT.put(careN, Float.parseFloat(persRefund));
                         MAX_REFUND.add(0f);
                     }
-
+                    break;
                 }
             }
         }

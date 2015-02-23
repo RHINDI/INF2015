@@ -10,8 +10,6 @@ public class ContractImpB extends SuperContract {
         super.refundsCalculation();
     }
 
-
-
     private void buildMap() {
         for (int i = 0; i < CLAIM_CARE_NBRS.size(); ++i) {
             String careN = CLAIM_CARE_NBRS.get(i);
@@ -29,11 +27,10 @@ public class ContractImpB extends SuperContract {
                         CARE_NBRS_MAP_REFUND_P_CENT.put(careN, Float.parseFloat(persRefund));
                         MAX_REFUND.add(0f);
                     }
-
+                    break;
                 }
             }
         }
     }
 
 }
-
