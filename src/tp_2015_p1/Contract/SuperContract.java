@@ -55,15 +55,14 @@ public class SuperContract implements Contract {
 
         return refundArray;
     }
-private void buildMap() {
-//    SuperContract s = new SuperContract(null);
-//    String p = SuperContract.class.getField("careRefundsA").get(careRefundsA)[0];
+protected void buildMap(String [] careRefund) {
+
         for (int i = 0; i < CLAIM_CARE_NBRS.size(); ++i) {
             String careN = CLAIM_CARE_NBRS.get(i);
 
             for (int j = 0; j < careNbr.length; ++j) {
                 String careNI = careNbr[j];
-                String persRefund = careRefundsA[j];
+                String persRefund = careRefund[j];
                 if (careN.matches(careNI)) {
                     if (persRefund.contains("|")) {
                         MAX_REFUND.add(Float.parseFloat(persRefund.replaceAll("\\.?\\d*f\\|", "")));
