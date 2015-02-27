@@ -6,10 +6,7 @@ import java.util.List;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-/**
- *
- * @author hackr
- */
+
 public class DataExtractor {
     private  final String CUSTOMER_FILE_ID;
     private  final  String CLAIM_MONTH;
@@ -64,3 +61,9 @@ public class DataExtractor {
 
 
 }
+
+
+
+
+
+
