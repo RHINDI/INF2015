@@ -6,10 +6,8 @@ public class ContractImpC extends SuperContract {
 
     public ContractImpC(DataExtractor claimData) {
         super(claimData);
-        super.buildMap(careRefundsC);
+        super.buildMap(super.REFUNDS_C);
         super.refundsCalculation();
     }
-
-   
-
+    
 }

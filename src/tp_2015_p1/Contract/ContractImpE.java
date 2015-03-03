@@ -4,10 +4,9 @@ import tp_2015_p1.Data.DataExtractor;
 
 public class ContractImpE extends SuperContract {
 
-
     public ContractImpE(DataExtractor claimData) {
         super(claimData);
-        super.buildMap(careRefundsE);
+        super.buildMap(super.REFUNDS_E);
         super.refundsCalculation();
     }
 

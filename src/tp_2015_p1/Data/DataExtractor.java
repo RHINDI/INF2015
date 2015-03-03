@@ -8,12 +8,9 @@ import net.sf.json.JSONObject;
 
 
 public class DataExtractor {
-    private  final String CUSTOMER_FILE_ID;
-    private  final  String CLAIM_MONTH;
+    private  final String CUSTOMER_FILE_ID, CLAIM_MONTH;
     private  final  JSONArray CLAIM_ARRAYS;
-    private  final  List<String> CLAIM_CARE_DATES;
-    private  final  List<String> CLAIM_CARE_NBRS;
-    private  final  List<String> CLAIM_AMOUNTS;
+    private  final  List<String> CLAIM_CARE_DATES, CLAIM_CARE_NBRS, CLAIM_AMOUNTS;
     
     public DataExtractor(String claimString){
         JSONObject claimObject = JSONObject.fromObject(claimString);
@@ -25,12 +22,16 @@ public class DataExtractor {
         CLAIM_CARE_NBRS = new ArrayList<>();
         
         
+        fillClaimArrays();
+        
+    }
+
+    private void fillClaimArrays() {
         for (Object c : CLAIM_ARRAYS) {
             CLAIM_CARE_NBRS.add(JSONObject.fromObject(c).getString("soin").trim());
             CLAIM_CARE_DATES.add(JSONObject.fromObject(c).getString("date").trim());
             CLAIM_AMOUNTS.add(JSONObject.fromObject(c).getString("montant").trim().replace(",", "."));
         }
-        
     }
 
        

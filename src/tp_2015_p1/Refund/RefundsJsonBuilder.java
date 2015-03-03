@@ -6,18 +6,18 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import tp_2015_p1.Data.DataExtractor;
 
-/**
- *
- * @author hackr
- */
+
 public class RefundsJsonBuilder {
 
     private static JSONObject REFUND_OBJ;
     private final DataExtractor CLAIM_DATA;
     private final List<Float> REFUND_AMOUNTS;
+    private final List<String> CLAIM_CARE_NBRS, CLAIM_CARE_DATES;
 
     public RefundsJsonBuilder(DataExtractor claimData) throws Exception {
         CLAIM_DATA = claimData;
+        CLAIM_CARE_NBRS = CLAIM_DATA.getClaimCareNbrs();
+        CLAIM_CARE_DATES =CLAIM_DATA.getClaimCareDates();
         REFUND_AMOUNTS = new RefundCalculator(CLAIM_DATA).getRefunds();
         buildJsonRefunds();
     }
@@ -34,12 +34,10 @@ public class RefundsJsonBuilder {
     private JSONArray CareArrayBuilder() throws NumberFormatException {
         JSONArray careArray = new JSONArray();
         JSONObject careObj = new JSONObject();
-        List<String> claimCareNbrs = CLAIM_DATA.getClaimCareNbrs();
-        List<String> claimCareDates = CLAIM_DATA.getClaimCareDates();
         
-        for (int i = 0; i < claimCareNbrs.size(); ++i) {
-            careObj.put("soin", Integer.parseInt(claimCareNbrs.get(i)));
-            careObj.put("date", claimCareDates.get(i));
+        for (int i = 0; i < CLAIM_CARE_NBRS.size(); ++i) {
+            careObj.put("soin", Integer.parseInt(CLAIM_CARE_NBRS.get(i)));
+            careObj.put("date", CLAIM_CARE_DATES.get(i));
             careObj.put("montant", String.format("%.2f$", REFUND_AMOUNTS.get(i)));
             careArray.add(careObj);
 
