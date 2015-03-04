@@ -28,11 +28,7 @@ public class Main {
             RefundsJsonBuilder refundObj = new RefundsJsonBuilder(validate.getclaimData());
 
             writeIntoFile(refundObj.getREFUND_OBJ(), OUTPUT_FILE);
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Erreur,arguments invalides..");
-            System.exit(0);
-            
+           
         } catch (Exception e) {
             JSONObject errorObj = new JSONObject();
             errorObj.put("Erreur", e.getMessage());
@@ -48,8 +44,8 @@ public class Main {
             OUTPUT_FILE = args[1];
 
         } else {
-            throw new ClaimExceptions().mainArgsException();
-
+            System.out.println("Erreur,arguments invalides..");
+            System.exit(0);
         }
     }
 

@@ -6,14 +6,12 @@
 package tp_2015_p1.File;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.charset.IllegalCharsetNameException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *

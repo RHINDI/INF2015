@@ -73,8 +73,4 @@ public class ClaimExceptions extends ClaimValidatorExceptions {
 
     }
 
-    public Exception mainArgsException() {
-      return new FileNotFoundException(MAIN_ARGS_ERR_MSG);
-    }
-
 }
