@@ -23,6 +23,8 @@ public class Main {
             
             CLAIM_FILE_STRING = FileReader.loadFileIntoString(INPUT_FILE, "UTF-8");
             ClaimValidator validate = new ClaimValidator(CLAIM_FILE_STRING);
+            validate.isJsonStructureValide();
+            validate.isJsonDataValide();
             RefundsJsonBuilder refundObj = new RefundsJsonBuilder(validate.getclaimData());
 
             writeIntoFile(refundObj.getREFUND_OBJ(), OUTPUT_FILE);

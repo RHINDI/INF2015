@@ -1,14 +1,16 @@
+
 package tp_2015_p1.Validation;
 
 import tp_2015_p1.Data.DataExtractor;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
+import tp_2015_p1.Exceptions.ClaimExceptions;
 
-public class ClaimValidator {
+public class ClaimValidator extends ClaimExceptions{
 
     private final String CLAIM_FILE_STRING;
-    private final DataExtractor CLAIM_DATA;
+    private static  DataExtractor CLAIM_DATA;
                                 //matche les numeros de soin 0,100,150,175,200,[300..400],500,600,700
     private final String CARE_NBR = "^[1-7]0{2}|3[0-9]{2}|0|150|175$";
     private final String CUSTOMER_FILE_ID = "^[A-E]\\d{6}$";//matche X000000
@@ -20,25 +22,30 @@ public class ClaimValidator {
 
     public ClaimValidator(String claimFileString) throws Exception {
         CLAIM_FILE_STRING = claimFileString;
+        
+        
+
+    }
+    public void isJsonStructureValide() throws Exception{
         isJsonValide();
         isSize3AndIndexsExist();
+    }
+    public void isJsonDataValide() throws Exception{
         CLAIM_DATA = new DataExtractor(CLAIM_FILE_STRING);
         isCustomerFileIdValide();
         isClaimMonthValide();
         isCareDatesValide();
-        isDateCareAndClaimEquilse();
+        isDateCareAndClaimEquals();
         isClaimCareNbrsValide();
         isClaimAmountsValide();
-
     }
-    
 
     private void isJsonValide() throws Exception {
         try {
             JSONSerializer.toJSON(CLAIM_FILE_STRING);
 
         } catch (JSONException ex) {
-            throw new Exception("la structure du ficher json est invalide.");
+            throw jsonStructureException();
         }
     }
 
@@ -47,13 +54,13 @@ public class ClaimValidator {
         String[] validIndexs = {"dossier", "mois", "reclamations"};
 
         if (jsonIndexs.size() != validIndexs.length) {
-            throw new Exception("Erreur: le nomber des cles attendu doit etre " + validIndexs.length + " .");
+            throw jsonSizeIndexException(validIndexs.length);
         } 
         
         for (String s : validIndexs) {
 
             if (!jsonIndexs.containsKey(s)) {
-                throw new Exception("Erreur: il y a une erreur avec la cle <" + s + "> ou elle n'existe pas.");
+                throw new ClaimExceptions().notKeyException(s);
             }
         }
 
@@ -63,14 +70,14 @@ public class ClaimValidator {
 
         
         if (!CLAIM_DATA.getCustomerFileId().matches(CUSTOMER_FILE_ID)) {
-            throw new Exception("Erreur: le numero du dossier doit etre un carataire de A a E suivi de 6 chiffre.");
+            throw new ClaimExceptions().notFileIdException();
         }
     }
 
     private void isClaimMonthValide() throws Exception {
 
         if (!CLAIM_DATA.getClaimMonth().matches(CLAIM_CARE_DATES)) {
-            throw new Exception("Erreur: la date du reclamation doit respecter la forme AAAA-MM.");
+            throw new ClaimExceptions().notMonthFormatException();
         }
     }
 
@@ -78,15 +85,15 @@ public class ClaimValidator {
 
         for (String c : CLAIM_DATA.getClaimCareDates()) {
             if (!(c.matches(CARE_DATE) )) {
-                throw new Exception("Erreur: la date du soin doit respecter la forme AAAA-MM-JJ.");
+                throw new ClaimExceptions().careDatesFormatException();
             }
         }
     }
-    private void isDateCareAndClaimEquilse() throws Exception {
+    private void isDateCareAndClaimEquals() throws Exception {
 
         for (String c : CLAIM_DATA.getClaimCareDates()) {
             if (!(CLAIM_DATA.getClaimMonth().equals(c.substring(0, 7)))) {
-                throw new Exception("Erreur:la date du soin est on dohore de la date du reclamation.");
+                throw new ClaimExceptions().notCareAndClaimDateEqualsException();
             }
         }
     }
@@ -95,7 +102,7 @@ public class ClaimValidator {
 
         for (String c : CLAIM_DATA.getClaimCareNbrs()) {
             if (!c.matches(CARE_NBR)) {
-                throw new Exception("Erreur: les numeros de soin valide sont [ 0,100,150,175,200,[300..400],500,600,700]");
+                throw new ClaimExceptions().notClaimCareNbrsException();
             }
         }
     }
@@ -104,7 +111,7 @@ public class ClaimValidator {
 
         for (String c : CLAIM_DATA.getClaimAmounts()) {
             if (!c.matches(CLAIM_AMOUNT)) {
-                throw new Exception("Erreur:le montant doit respecter la forme ..000.00$ ou ..000,00$");
+                throw new ClaimExceptions().notClaimAmountsFormatException();
             }
         }
 
@@ -115,3 +122,4 @@ public class ClaimValidator {
     }
 
 }
+
