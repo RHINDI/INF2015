@@ -60,7 +60,6 @@ public class ClaimValidatorTest {
                   + "\"montant\": \"75.00$\"}]} ";
           
         ClaimValidator validate = new ClaimValidator(jsonString);
-        //thrown.expect(Exception.class);
         thrown.expectMessage(equalTo("Erreur: le nomber des cles attendu doit etre 3 ."));
         
         validate.isJsonStructureValide(); 

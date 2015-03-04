@@ -1,5 +1,6 @@
 package tp_2015_p1.Exceptions;
 
+import java.io.FileNotFoundException;
 import net.sf.json.JSONException;
 
 public class ClaimExceptions extends ClaimValidatorExceptions {
@@ -13,6 +14,7 @@ public class ClaimExceptions extends ClaimValidatorExceptions {
     private static final String CARE_NBR_ERR_MSG = "Erreur: les numeros de soin valide sont [ 0,100,150,175,200,[300..400],500,600,700]";
     private static final String AMOUNTS_FORMAT_ERR_MSG = "Erreur:le montant doit respecter la forme ..000.00$ ou ..000,00$";
     private static final String CARE_DATES_FORMAT_ERR_MSG = "Erreur: la date du soin doit respecter la forme AAAA-MM-JJ.";
+    private static final String MAIN_ARGS_ERR_MSG = "Erreur,arguments invalides..";
 
     
     public ClaimExceptions(){
@@ -69,6 +71,10 @@ public class ClaimExceptions extends ClaimValidatorExceptions {
     public Exception notClaimAmountsFormatException() {
         return new Exception(AMOUNTS_FORMAT_ERR_MSG);
 
+    }
+
+    public Exception mainArgsException() {
+      return new FileNotFoundException(MAIN_ARGS_ERR_MSG);
     }
 
 }
