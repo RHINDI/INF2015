@@ -37,21 +37,7 @@ public class MainTest {//extends Main{
         assertEquals(Main.INPUT_FILE, args[0]);
         assertEquals(Main.OUTPUT_FILE, args[1]);
     }
-//    @Test(expected = FileNotFoundException.class)
-//    public void testMainArgs() throws Exception {
-//        String[] args = {"inputfile.json"};
-//        Main.main(args);
-//    }
-//    @Test(expected = FileNotFoundException.class)
-//    public void testMainArgs2() throws Exception {
-//        String[] args = {"inputfile.json","refunds.json","nofile.json"};
-//        Main.main(args);
-//    }
-    @Test(expected = FileNotFoundException.class)
-    public void testMainArgs3() throws Exception {
-        String[] args = {};
-        Main.main(args);
-    }
+
     
 
 }
