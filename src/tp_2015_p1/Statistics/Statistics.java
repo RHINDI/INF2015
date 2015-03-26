@@ -62,7 +62,7 @@ public class Statistics {
         JSONArray obj = new JSONArray();
         JSONObject totCares = new JSONObject();
 
-        while (!CLAIM_STRING.isEmpty()) {
+        for (int i= 0 ; !CLAIM_STRING.isEmpty();++i) {
             String careNb = CLAIM_STRING.get(0).replaceAll("\\|.+$", "");
             totCares.put(careName(careNb) + " : ", count(careNb));
             obj.add(totCares);
@@ -85,7 +85,7 @@ public class Statistics {
         int count = 0;
 
         for (Iterator<String> iterator = CLAIM_STRING.iterator(); iterator.hasNext();) {
-            String string = iterator.next();
+            String string = iterator.next().replaceAll("\\|.+$", "");
             if (string.matches(care)) {
                 count++;
                 iterator.remove();

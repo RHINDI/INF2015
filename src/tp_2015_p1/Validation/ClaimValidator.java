@@ -26,9 +26,6 @@ public class ClaimValidator extends ClaimExceptions{
     public ClaimValidator(String claimFileString) throws Exception {
         CLAIM_FILE_STRING = claimFileString;
         CLAIM_STRING = new ArrayList<>();
-        
-        
-
     }
     public void isJsonStructureValide() throws Exception{
         isJsonValide();
@@ -68,12 +65,10 @@ public class ClaimValidator extends ClaimExceptions{
                 throw new ClaimExceptions().notKeyException(s);
             }
         }
-
     }
 
     private void isCustomerFileIdValide() throws Exception {
-
-        
+ 
         if (!CLAIM_DATA.getCustomerFileId().matches(CUSTOMER_FILE_ID)) {
             throw new ClaimExceptions().notFileIdException();
         }
@@ -95,7 +90,6 @@ public class ClaimValidator extends ClaimExceptions{
                 throw new ClaimExceptions().careDatesFormatException();
             }
         }
-
     }
     private void isDateCareAndClaimEquals() throws Exception {
 
@@ -106,7 +100,6 @@ public class ClaimValidator extends ClaimExceptions{
                 throw new ClaimExceptions().notCareAndClaimDateEqualsException();
             }
         }
-
     }
 
     private void isClaimCareNbrsValide() throws Exception {
@@ -118,7 +111,6 @@ public class ClaimValidator extends ClaimExceptions{
                 throw new ClaimExceptions().notClaimCareNbrsException();
             }
         }
-
     }
 
     private void isClaimAmountsValide() throws Exception {
@@ -130,8 +122,6 @@ public class ClaimValidator extends ClaimExceptions{
                 throw new ClaimExceptions().notClaimAmountsFormatException();
             }
         }
-
-
     }
 
     public DataExtractor getclaimData() {
