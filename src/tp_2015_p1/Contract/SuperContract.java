@@ -1,23 +1,22 @@
 package tp_2015_p1.Contract;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import tp_2015_p1.Data.DataExtractor;
 import tp_2015_p1.Data.JsonData;
+import tp_2015_p1.Refund.Dollar;
 
 public class SuperContract extends JsonData implements Contract {
 
     protected final List<String> CLAIM_STRING;
-    protected final Map<String, Float> CARE_NBRS_MAP_REFUND_P_CENT;
+    protected final List<String> CARE_NBRS_PRESENT;
     protected List<Float> MAX_REFUND;
 
     
     public SuperContract(DataExtractor claimData) {
 
         CLAIM_STRING = claimData.getClaimString();
-        CARE_NBRS_MAP_REFUND_P_CENT = new HashMap<>();
+        CARE_NBRS_PRESENT = new ArrayList<>();
         MAX_REFUND = new ArrayList<>();
 
     }
@@ -26,20 +25,12 @@ public class SuperContract extends JsonData implements Contract {
     public List<Float> refundsCalculation() {
 
         List<Float> refundArray = new ArrayList<>();
+        Dollar dollar = new Dollar();
 
         for (int i = 0; i < CLAIM_STRING.size(); ++i) {
 
-            float careAmount = Float.parseFloat(CLAIM_STRING.get(i).replaceAll(".+\\|", "").replace("$", ""));
-            String careNb = CLAIM_STRING.get(i).replaceAll("\\|.+$", "");
-            float percentRefund = CARE_NBRS_MAP_REFUND_P_CENT.get(careNb);
-            if (MAX_REFUND.get(i) != 0) {
-                refundArray.add(Math.min(MAX_REFUND.get(i), careAmount * percentRefund));
-
-            } else {
-                refundArray.add(careAmount * percentRefund);
-
-            }
-
+            String careAmount = CLAIM_STRING.get(i).replaceAll(".+\\|", "").replace("$", "");
+            refundArray.add(dollar.getReturnedAmount(CARE_NBRS_PRESENT.get(i),careAmount));
         }
 
         return refundArray;
@@ -52,28 +43,12 @@ public class SuperContract extends JsonData implements Contract {
 
             for (int j = 0; j < ALL_CARE_NBR.length; ++j) {
                 if (careN.matches(ALL_CARE_NBR[j])) {
-                    addInMapAndMaxRefund(careRefund[j], careN);
+                    CARE_NBRS_PRESENT.add(careN +"|" + careRefund[j]);
                     break;
 
                 }
             }
         }
 
-    }
-
-    private void addInMapAndMaxRefund(String percentRefund, String careN)  {
-        String  maxRefund = "\\.?\\d*f\\|";//match le pourcentage de remboursement
-        String  percent = "\\|\\d+";// match le maximume
-        
-        if (percentRefund.contains("|")) {
-            MAX_REFUND.add(Float.parseFloat(percentRefund.replaceAll(maxRefund, "")));
-            percentRefund = percentRefund.replaceAll(percent, "");
-            CARE_NBRS_MAP_REFUND_P_CENT.put(careN, Float.parseFloat(percentRefund));
-            
-        } else {
-            CARE_NBRS_MAP_REFUND_P_CENT.put(careN, Float.parseFloat(percentRefund));
-            MAX_REFUND.add(0f);
-        }
-        
     }
 }
