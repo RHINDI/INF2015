@@ -12,12 +12,11 @@ public class RefundsJsonBuilder {
     private static JSONObject REFUND_OBJ;
     private final DataExtractor CLAIM_DATA;
     private final List<Float> REFUND_AMOUNTS;
-    private final List<String> CLAIM_CARE_NBRS, CLAIM_CARE_DATES;
+    private final List<String> CLAIM_STRING;
 
     public RefundsJsonBuilder(DataExtractor claimData) throws Exception {
         CLAIM_DATA = claimData;
-        CLAIM_CARE_NBRS = CLAIM_DATA.getClaimCareNbrs();
-        CLAIM_CARE_DATES =CLAIM_DATA.getClaimCareDates();
+        CLAIM_STRING = CLAIM_DATA.getClaimString();
         REFUND_AMOUNTS = new RefundCalculator(CLAIM_DATA).getRefunds();
         buildJsonRefunds();
     }
@@ -35,9 +34,9 @@ public class RefundsJsonBuilder {
         JSONArray careArray = new JSONArray();
         JSONObject careObj = new JSONObject();
         
-        for (int i = 0; i < CLAIM_CARE_NBRS.size(); ++i) {
-            careObj.put("soin", Integer.parseInt(CLAIM_CARE_NBRS.get(i)));
-            careObj.put("date", CLAIM_CARE_DATES.get(i));
+        for (int i = 0; i < CLAIM_STRING.size(); ++i) {
+            careObj.put("soin", Integer.parseInt(CLAIM_STRING.get(i).replaceAll("\\|.+$", "")));
+            careObj.put("date", CLAIM_STRING.get(i).replaceAll("\\|\\d+\\..+", "").replaceAll(".+\\|", ""));
             careObj.put("montant", String.format("%.2f$", REFUND_AMOUNTS.get(i)));
             careArray.add(careObj);
 

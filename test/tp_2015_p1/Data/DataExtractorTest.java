@@ -58,21 +58,21 @@ public class DataExtractorTest {
 
     @Test
     public void testGetClaimCareDates() {
-        assertEquals(data.getClaimCareDates().size(), 1);
-        assertEquals(data.getClaimCareDates().get(0), "2015-01-11");
+        assertEquals(data.getClaimString().size(), 1);
+        assertEquals(data.getClaimString().get(0).replaceAll("\\|\\d+\\..+", "").replaceAll(".+\\|", ""), "2015-01-11");
     }
 
     @Test
     public void testGetClaimCareNbrs() {
-        assertEquals(data.getClaimCareNbrs().size(), 1);
-        assertEquals(data.getClaimCareNbrs().get(0), "350");
+        assertEquals(data.getClaimString().size(), 1);
+        assertEquals(data.getClaimString().get(0).replaceAll("\\|.+$", ""), "350");
 
     }
 
     @Test
     public void testGetClaimAmounts() {
-        assertEquals(data.getClaimAmounts().size(), 1);
-        assertEquals(data.getClaimAmounts().get(0), "75.00$");
+        assertEquals(data.getClaimString().size(), 1);
+        assertEquals(data.getClaimString().get(0).replaceAll(".+\\|", ""), "75.00$");
     }
 
 }

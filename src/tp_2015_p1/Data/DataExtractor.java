@@ -10,16 +10,15 @@ import net.sf.json.JSONObject;
 public class DataExtractor {
     private  final String CUSTOMER_FILE_ID, CLAIM_MONTH;
     private  final  JSONArray CLAIM_ARRAYS;
-    private  final  List<String> CLAIM_CARE_DATES, CLAIM_CARE_NBRS, CLAIM_AMOUNTS;
+    private  final  List<String> CLAIM_STRING;
     
     public DataExtractor(String claimString){
         JSONObject claimObject = JSONObject.fromObject(claimString);
         CUSTOMER_FILE_ID = claimObject.getString("dossier").trim();
         CLAIM_MONTH = claimObject.getString("mois").trim();
         CLAIM_ARRAYS = claimObject.getJSONArray("reclamations");
-        CLAIM_AMOUNTS = new ArrayList<>();
-        CLAIM_CARE_DATES = new ArrayList<>();
-        CLAIM_CARE_NBRS = new ArrayList<>();
+
+        CLAIM_STRING = new ArrayList<>();
         
         
         fillClaimArrays();
@@ -28,9 +27,11 @@ public class DataExtractor {
 
     private void fillClaimArrays() {
         for (Object c : CLAIM_ARRAYS) {
-            CLAIM_CARE_NBRS.add(JSONObject.fromObject(c).getString("soin").trim());
-            CLAIM_CARE_DATES.add(JSONObject.fromObject(c).getString("date").trim());
-            CLAIM_AMOUNTS.add(JSONObject.fromObject(c).getString("montant").trim().replace(",", "."));
+            String soin = JSONObject.fromObject(c).getString("soin").trim();
+            String date = JSONObject.fromObject(c).getString("date").trim();
+            String montant = JSONObject.fromObject(c).getString("montant").trim().replace(",", ".");
+            CLAIM_STRING.add(soin +"|"+ date +"|"+ montant);
+
         }
     }
 
@@ -48,16 +49,9 @@ public class DataExtractor {
         return CLAIM_ARRAYS;
     }
 
-    public List<String> getClaimCareDates() {
-        return CLAIM_CARE_DATES;
-    }
-
-    public List<String> getClaimCareNbrs() {
-        return CLAIM_CARE_NBRS;
-    }
-
-    public List<String> getClaimAmounts() {
-        return CLAIM_AMOUNTS;
+    
+    public List<String> getClaimString() {
+        return CLAIM_STRING;
     }
 
 

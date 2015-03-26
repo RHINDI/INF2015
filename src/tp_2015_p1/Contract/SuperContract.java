@@ -9,15 +9,14 @@ import tp_2015_p1.Data.JsonData;
 
 public class SuperContract extends JsonData implements Contract {
 
-    protected final List<String> CLAIM_CARE_NBRS;
-    protected final List<String> CLAIM_AMOUNTS;
+    protected final List<String> CLAIM_STRING;
     protected final Map<String, Float> CARE_NBRS_MAP_REFUND_P_CENT;
     protected List<Float> MAX_REFUND;
 
     
     public SuperContract(DataExtractor claimData) {
-        CLAIM_CARE_NBRS = claimData.getClaimCareNbrs();
-        CLAIM_AMOUNTS = claimData.getClaimAmounts();
+
+        CLAIM_STRING = claimData.getClaimString();
         CARE_NBRS_MAP_REFUND_P_CENT = new HashMap<>();
         MAX_REFUND = new ArrayList<>();
 
@@ -28,10 +27,10 @@ public class SuperContract extends JsonData implements Contract {
 
         List<Float> refundArray = new ArrayList<>();
 
-        for (int i = 0; i < CLAIM_CARE_NBRS.size(); ++i) {
+        for (int i = 0; i < CLAIM_STRING.size(); ++i) {
 
-            float careAmount = Float.parseFloat(CLAIM_AMOUNTS.get(i).replace("$", ""));
-            String careNb = CLAIM_CARE_NBRS.get(i);
+            float careAmount = Float.parseFloat(CLAIM_STRING.get(i).replaceAll(".+\\|", "").replace("$", ""));
+            String careNb = CLAIM_STRING.get(i).replaceAll("\\|.+$", "");
             float percentRefund = CARE_NBRS_MAP_REFUND_P_CENT.get(careNb);
             if (MAX_REFUND.get(i) != 0) {
                 refundArray.add(Math.min(MAX_REFUND.get(i), careAmount * percentRefund));
@@ -48,8 +47,8 @@ public class SuperContract extends JsonData implements Contract {
 
     protected void buildMap(String[] careRefund) {
 
-        for (int i = 0; i < CLAIM_CARE_NBRS.size(); ++i) {
-            String careN = CLAIM_CARE_NBRS.get(i);
+        for (int i = 0; i < CLAIM_STRING.size(); ++i) {
+            String careN = CLAIM_STRING.get(i).replaceAll("\\|.+$", "");
 
             for (int j = 0; j < ALL_CARE_NBR.length; ++j) {
                 if (careN.matches(ALL_CARE_NBR[j])) {

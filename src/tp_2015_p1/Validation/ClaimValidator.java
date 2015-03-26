@@ -1,6 +1,8 @@
 
 package tp_2015_p1.Validation;
 
+import java.util.ArrayList;
+import java.util.List;
 import tp_2015_p1.Data.DataExtractor;
 import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
@@ -11,6 +13,7 @@ public class ClaimValidator extends ClaimExceptions{
 
     private final String CLAIM_FILE_STRING;
     private static  DataExtractor CLAIM_DATA;
+    private static  List<String> CLAIM_STRING;
                                 //matche les numeros de soin 0,100,150,175,200,[300..400],500,600,700
     private final String CARE_NBR = "^[1-7]0{2}|3[0-9]{2}|0|150|175$";
     private final String CUSTOMER_FILE_ID = "^[A-E]\\d{6}$";//matche X000000
@@ -22,6 +25,7 @@ public class ClaimValidator extends ClaimExceptions{
 
     public ClaimValidator(String claimFileString) throws Exception {
         CLAIM_FILE_STRING = claimFileString;
+        CLAIM_STRING = new ArrayList<>();
         
         
 
@@ -32,6 +36,7 @@ public class ClaimValidator extends ClaimExceptions{
     }
     public void isJsonDataValide() throws Exception{
         CLAIM_DATA = new DataExtractor(CLAIM_FILE_STRING);
+        CLAIM_STRING = CLAIM_DATA.getClaimString();
         isCustomerFileIdValide();
         isClaimMonthValide();
         isCareDatesValide();
@@ -83,37 +88,49 @@ public class ClaimValidator extends ClaimExceptions{
 
     private void isCareDatesValide() throws Exception {
 
-        for (String c : CLAIM_DATA.getClaimCareDates()) {
-            if (!(c.matches(CARE_DATE) )) {
+        for (String c : CLAIM_STRING) {
+            String b = c.replaceAll("\\|\\d+\\..+", "").replaceAll(".+\\|", "");
+            
+            if (!(b.matches(CARE_DATE) )) {
                 throw new ClaimExceptions().careDatesFormatException();
             }
         }
+
     }
     private void isDateCareAndClaimEquals() throws Exception {
 
-        for (String c : CLAIM_DATA.getClaimCareDates()) {
-            if (!(CLAIM_DATA.getClaimMonth().equals(c.substring(0, 7)))) {
+        for (String c : CLAIM_STRING) {
+            String b = c.replaceAll("\\d+\\||-\\d+\\|.+$", "");
+            
+            if (!(CLAIM_DATA.getClaimMonth().equals(b))) {
                 throw new ClaimExceptions().notCareAndClaimDateEqualsException();
             }
         }
+
     }
 
     private void isClaimCareNbrsValide() throws Exception {
 
-        for (String c : CLAIM_DATA.getClaimCareNbrs()) {
-            if (!c.matches(CARE_NBR)) {
+        for (String c : CLAIM_STRING) {
+            String b = c.replaceAll("\\|.+$", "");
+            
+            if (!b.matches(CARE_NBR)) {
                 throw new ClaimExceptions().notClaimCareNbrsException();
             }
         }
+
     }
 
     private void isClaimAmountsValide() throws Exception {
 
-        for (String c : CLAIM_DATA.getClaimAmounts()) {
-            if (!c.matches(CLAIM_AMOUNT)) {
+        for (String c : CLAIM_STRING) {
+            String b = c.replaceAll(".+\\|", "");
+            
+            if (!b.matches(CLAIM_AMOUNT)) {
                 throw new ClaimExceptions().notClaimAmountsFormatException();
             }
         }
+
 
     }
 

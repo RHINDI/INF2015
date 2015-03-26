@@ -1,18 +1,18 @@
 package tp_2015_p1.Main;
 
-import java.io.FileNotFoundException;
 import tp_2015_p1.Validation.ClaimValidator;
 import tp_2015_p1.Refund.RefundsJsonBuilder;
 import tp_2015_p1.File.FileWriter;
 import tp_2015_p1.File.FileReader;
 import java.io.IOException;
 import net.sf.json.JSONObject;
-import tp_2015_p1.Exceptions.ClaimExceptions;
+import tp_2015_p1.Statistics.Statistics;
 
 /**
  *
  * @author equipe 23
  */
+
 public class Main {
 
     protected static String INPUT_FILE = "";
@@ -28,7 +28,10 @@ public class Main {
             RefundsJsonBuilder refundObj = new RefundsJsonBuilder(validate.getclaimData());
 
             writeIntoFile(refundObj.getREFUND_OBJ(), OUTPUT_FILE);
-           
+
+            Statistics stat = new Statistics(validate.getclaimData());
+            stat.writeStatisticsFile();
+
         } catch (Exception e) {
             JSONObject errorObj = new JSONObject();
             errorObj.put("Erreur", e.getMessage());
@@ -37,9 +40,18 @@ public class Main {
         }
     }
 
-
     private static void validateArgs(String[] args) throws Exception {
-        if (args.length == 2) {
+
+        if (args.length == 1) {
+                Statistics stat = new Statistics();
+            if (args[0].equalsIgnoreCase("-s")) {
+                stat.printStatisticsFile();
+                System.exit(0);
+            } else if (args[0].equalsIgnoreCase("-sr")) {
+                stat.resetStatisticsFile();
+                System.exit(0);
+            }
+        } else if (args.length == 2) {
             INPUT_FILE = args[0];
             OUTPUT_FILE = args[1];
 
@@ -55,7 +67,7 @@ public class Main {
         validate.isJsonDataValide();
         return validate;
     }
-    
+
     private static void writeIntoFile(JSONObject obj, String args) throws IOException {
         FileWriter.writeStringIntoFile(obj.toString(2), args, "UTF-8");
     }
