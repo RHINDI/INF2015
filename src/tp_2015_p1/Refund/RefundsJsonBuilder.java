@@ -11,8 +11,7 @@ public class RefundsJsonBuilder {
 
     private static JSONObject REFUND_OBJ;
     private final DataExtractor CLAIM_DATA;
-    private final List<Float> REFUND_AMOUNTS;
-    private final List<String> CLAIM_STRING;
+    private final List<String> REFUND_AMOUNTS,CLAIM_STRING;
 
     public RefundsJsonBuilder(DataExtractor claimData) throws Exception {
         CLAIM_DATA = claimData;
@@ -27,7 +26,7 @@ public class RefundsJsonBuilder {
         REFUND_OBJ.put("dossier", CLAIM_DATA.getCustomerFileId());
         REFUND_OBJ.put("mois", CLAIM_DATA.getClaimMonth());
         REFUND_OBJ.put("remboursement", CareArrayBuilder());
-        REFUND_OBJ.put("total", String.format("%.2f$", RefundTotal()));
+        REFUND_OBJ.put("total", RefundTotal().replaceAll("(\\d{2})$",".$1") +"$");
     }
 
     private JSONArray CareArrayBuilder() throws NumberFormatException {
@@ -37,20 +36,21 @@ public class RefundsJsonBuilder {
         for (int i = 0; i < CLAIM_STRING.size(); ++i) {
             careObj.put("soin", Integer.parseInt(CLAIM_STRING.get(i).replaceAll("\\|.+$", "")));
             careObj.put("date", CLAIM_STRING.get(i).replaceAll("\\|\\d+\\..+", "").replaceAll(".+\\|", ""));
-            careObj.put("montant", String.format("%.2f$", REFUND_AMOUNTS.get(i)));
+            careObj.put("montant", REFUND_AMOUNTS.get(i).replaceAll("(\\d{2})$",".$1") +"$");
             careArray.add(careObj);
 
         }
         return careArray;
     }
 
-    private Float RefundTotal() {
-        float sum = 0f;
-        for (float f : REFUND_AMOUNTS){
-            sum += f;
+    private String RefundTotal() {
+        int sum = 0;
+        for (String f : REFUND_AMOUNTS){
+            int k = Integer.parseInt(f);
+            sum += k;
             
         }
-       return sum;
+       return Integer.toString(sum);
     }
 
     public JSONObject getREFUND_OBJ() {

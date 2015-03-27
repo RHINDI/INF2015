@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface Contract {
     
-    List<Float> refundsCalculation();
+    List<String> refundsCalculation();
     
 }

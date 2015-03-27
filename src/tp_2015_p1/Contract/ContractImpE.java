@@ -6,8 +6,7 @@ public class ContractImpE extends SuperContract {
 
     public ContractImpE(DataExtractor claimData) {
         super(claimData);
-        super.buildMap(super.REFUNDS_E);
-        super.refundsCalculation();
+        super.buildArrayList(super.REFUNDS_E);
     }
 
 }

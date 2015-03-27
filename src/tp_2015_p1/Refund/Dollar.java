@@ -4,27 +4,51 @@ import org.apache.commons.lang.StringUtils;
 
 public class Dollar {
 
-    private static String[] CARE_MONTH_MAX = {"100|250", "175|200", "200|250", "500|150", "600|300"};
+    private static final String[] CARE_MONTH_MAX = {"100|25000", "175|20000", "200|25000", "500|15000", "600|30000"};
 
-    public Float getReturnedAmount(String careClaimed, String careAmount) {
+    public String getReturnedAmount(String careClaimed, int careAmount) {
+        int amountReturned ;
+        String maxRefundRegx = ".+\\|";//match le pourcentage de remboursement
+        String percentRegx = "\\d{3}\\||\\|\\d+";// match le maximume
+        String careNbr = careClaimed.replaceAll("\\|.+$", "");
         int occurance = StringUtils.countMatches(careClaimed, "|");
-        String maxRefund = "\\.?\\d*f\\|";//match le pourcentage de remboursement
-        String percent = "\\|\\d+";// match le maximume
-
+        
         if (occurance == 1) {
-            float a = Float.parseFloat(careClaimed.replaceAll("^.+\\|", ""));
-            
-            return Float.parseFloat(careAmount) * a;
+            float percent = Float.parseFloat(careClaimed.replaceAll("^.+\\|", ""));
+            amountReturned = (int) (careAmount * percent);
 
-        }else{
+        } else {
+
+            int max = Integer.parseInt(careClaimed.replaceAll(maxRefundRegx, ""));
+            float a = Float.parseFloat(careClaimed.replaceAll(percentRegx, ""));
+            amountReturned = (int)(Math.min(max, careAmount * a));
+        }
+            if (careNbr.matches("[1256]0{2}|175")) {
+                amountReturned = checkMounthMax(careNbr, amountReturned);
+            }
+            return Integer.toString(amountReturned);
+    }
+
+    private int checkMounthMax(String careNbr, int amountReturned) {
+        int maxMounth;
+
+        for (int i = 0; i < CARE_MONTH_MAX.length; ++i) {
+            String c = CARE_MONTH_MAX[i];
             
-            float max = Float.parseFloat(careClaimed.replaceAll(".+\\|", ""));
-            float a = Float.parseFloat(careClaimed.replaceAll("\\|\\d+", "").replaceAll("^.+\\|", ""));
-            
-            return Math.min(max,Float.parseFloat(careAmount) * a);
+            if (careNbr.matches(c.replaceAll("\\|.+", ""))) {
+                maxMounth = Integer.parseInt(c.replaceAll(".+\\|", ""));
+                
+                if (maxMounth <= amountReturned) {
+                    CARE_MONTH_MAX[i] = careNbr + "|" + 0;
+                    return maxMounth;
+                } else {
+                    maxMounth -= amountReturned;
+                    CARE_MONTH_MAX[i] = careNbr + "|" + Integer.toString(maxMounth);
+                }
+            }
         }
 
-        
+        return amountReturned;
     }
 
 }

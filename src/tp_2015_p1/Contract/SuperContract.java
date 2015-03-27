@@ -22,21 +22,20 @@ public class SuperContract extends JsonData implements Contract {
     }
 
     @Override
-    public List<Float> refundsCalculation() {
+    public List<String> refundsCalculation() {
 
-        List<Float> refundArray = new ArrayList<>();
+        List<String> refundArray = new ArrayList<>();
         Dollar dollar = new Dollar();
 
         for (int i = 0; i < CLAIM_STRING.size(); ++i) {
 
-            String careAmount = CLAIM_STRING.get(i).replaceAll(".+\\|", "").replace("$", "");
+            int careAmount = Integer.parseInt(CLAIM_STRING.get(i).replaceAll(".+\\||\\$|\\.", ""));
             refundArray.add(dollar.getReturnedAmount(CARE_NBRS_PRESENT.get(i),careAmount));
         }
-
         return refundArray;
     }
 
-    protected void buildMap(String[] careRefund) {
+    protected void buildArrayList(String[] careRefund) {
 
         for (int i = 0; i < CLAIM_STRING.size(); ++i) {
             String careN = CLAIM_STRING.get(i).replaceAll("\\|.+$", "");

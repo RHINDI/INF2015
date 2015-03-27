@@ -6,8 +6,7 @@ public class ContractImpD extends SuperContract {
 
     public ContractImpD(DataExtractor claimData) {
         super(claimData);
-        super.buildMap(super.REFUNDS_D);
-        super.refundsCalculation();
+        super.buildArrayList(super.REFUNDS_D);
     }
 
 }

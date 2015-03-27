@@ -13,14 +13,14 @@ public class RefundCalculator {
 
     }
 
-    public List<Float> getRefunds() throws Exception {
+    public List<String> getRefunds() throws Exception {
         char contractType =  CLAIM_DATA.getCustomerFileId().charAt(0);
         String fullClassName = "tp_2015_p1.Contract.ContractImp" + contractType;
         Class contractImpX = Class.forName(fullClassName);
         Object instanceContract = contractImpX.getConstructor(DataExtractor.class).newInstance(CLAIM_DATA);
         Method method = contractImpX.getMethod("refundsCalculation");
 
-        return (List<Float>) method.invoke(instanceContract);
+        return (List<String>) method.invoke(instanceContract);
 
     }
 }
