@@ -11,7 +11,8 @@ import tp_2015_p1.Data.DataExtractor;
 import tp_2015_p1.File.FileReader;
 import tp_2015_p1.File.FileWriter;
 
-public class Statistics {
+public class Statistics1 {
+
     private final String TOT_NBR_CLAIM_PROCESSED = "Le nombre de réclamations traitées : ";
     private final String TOT_NBR_CLAIM_REJECTED = "Le nombre de réclamations rejetées : ";
     private final String NBR_CARS_CLAMED = "le nombre de soins déclares pour : ";
@@ -27,16 +28,11 @@ public class Statistics {
     private static HashMap CARE_NBRE;
     private static List<String> CLAIM_STRING;
 
-    public Statistics(DataExtractor claimData) throws Exception {
+    public Statistics1(DataExtractor claimData) throws Exception {
         CLAIM_STRING = claimData.getClaimString();
     }
 
-    public Statistics() throws Exception {
-
-    }
-
-    public void resetStatisticsFile() throws IOException {
-        
+    public Statistics1() throws Exception {
 
     }
 
@@ -63,13 +59,8 @@ public class Statistics {
         }
     }
 
-    public void writeStatisticsFile() throws IOException {
-        JSONObject statisticsToWrite = new JSONObject();
-
-        statisticsToWrite.put(TOT_NBR_CLAIM_PROCESSED, CLAIM_STRING.size());
-        statisticsToWrite.put(TOT_NBR_CLAIM_REJECTED, NBR_CLAIM_REJECTED);
-        statisticsToWrite.put(NBR_CARS_CLAMED, buildStatJson());
-        FileWriter.writeStringIntoFile(statisticsToWrite.toString(2), "statistics.json", "UTF-8");
+    public void setNbrClaimProcessed(int nbrClaimProcessed) {
+        NBR_CLAIM_PROCESSED += nbrClaimProcessed;
     }
 
     private JSONArray buildStatJson() {
@@ -85,6 +76,7 @@ public class Statistics {
 
         return obj;
     }
+
 
     private String careName(String careNb) {
         for (String n : cares_name) {
@@ -105,11 +97,21 @@ public class Statistics {
                 iterator.remove();
             }
         }
-
         return count;
     }
 
-    public void printStatisticsFile() throws IOException {
+    //
+    ///
+    //
+    //
+    //
+    //
+    //
+    //
+    public void writeStatisticsFile() throws IOException {
+    }
+
+public void printStatisticsFile() throws IOException {
 //        readStatisticsFile();
 //        JSONObject statisticsObject = JSONObject.fromObject(jsonStatistics);
 //        System.out.print(""
@@ -124,6 +126,9 @@ public class Statistics {
 //            System.out.println("    " + g.replaceAll("[{\"]|[\":\\d}]", "") + " : " + careName.toString().replaceAll("\\D", ""));
 //        }
 
+    }
+
+    public void resetStatisticsFile() throws IOException {
     }
 
 }

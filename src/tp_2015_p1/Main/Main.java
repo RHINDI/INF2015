@@ -7,6 +7,7 @@ import tp_2015_p1.File.FileReader;
 import java.io.IOException;
 import net.sf.json.JSONObject;
 import tp_2015_p1.Statistics.Statistics;
+import tp_2015_p1.Statistics.Statistics1;
 
 /**
  *
@@ -22,14 +23,17 @@ public class Main {
     public static void main(String[] args) throws Exception {
         try {
             validateArgs(args);
+            
 
             CLAIM_FILE_STRING = FileReader.loadFileIntoString(INPUT_FILE, "UTF-8");
             ClaimValidator validate = validateData();
+            Statistics stat = new Statistics(validate.getclaimData());
+            stat.readStatisticsFile();
+            
             RefundsJsonBuilder refundObj = new RefundsJsonBuilder(validate.getclaimData());
 
             writeIntoFile(refundObj.getREFUND_OBJ(), OUTPUT_FILE);
 
-            Statistics stat = new Statistics(validate.getclaimData());
             stat.writeStatisticsFile();
 
         } catch (Exception e) {

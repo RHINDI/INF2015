@@ -9,7 +9,7 @@ public class Dollar {
     public String getReturnedAmount(String careClaimed, int careAmount) {
         int amountReturned ;
         String maxRefundRegx = ".+\\|";//match le pourcentage de remboursement
-        String percentRegx = "\\d{3}\\||\\|\\d+";// match le maximume
+        String percentRegx = "(\\d{1,}\\|)|(\\|\\d*)";// match le maximume
         String careNbr = careClaimed.replaceAll("\\|.+$", "");
         int occurance = StringUtils.countMatches(careClaimed, "|");
         
@@ -44,6 +44,7 @@ public class Dollar {
                 } else {
                     maxMounth -= amountReturned;
                     CARE_MONTH_MAX[i] = careNbr + "|" + Integer.toString(maxMounth);
+                    break;
                 }
             }
         }
