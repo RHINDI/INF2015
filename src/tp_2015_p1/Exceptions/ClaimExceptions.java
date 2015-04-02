@@ -1,7 +1,7 @@
 package tp_2015_p1.Exceptions;
 
-import java.io.FileNotFoundException;
 import net.sf.json.JSONException;
+import tp_2015_p1.Statistics.Statistics;
 
 public class ClaimExceptions extends ClaimValidatorExceptions {
 
@@ -17,8 +17,7 @@ public class ClaimExceptions extends ClaimValidatorExceptions {
     private static final String MAIN_ARGS_ERR_MSG = "Erreur,arguments invalides..";
 
     
-    public ClaimExceptions(){
-        
+    public ClaimExceptions() throws Exception{
     }
     
 

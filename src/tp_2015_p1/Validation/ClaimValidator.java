@@ -124,7 +124,7 @@ public class ClaimValidator extends ClaimExceptions{
         }
     }
 
-    public DataExtractor getclaimData() {
+    public DataExtractor getClaimData() {
         return CLAIM_DATA;
     }
 
